@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 children: [
                   CircleAvatar(
-                    radius: 35,
+                    radius: 30,
                     child: Icon(Icons.person),
                   ),
                   SizedBox(height: 10),
