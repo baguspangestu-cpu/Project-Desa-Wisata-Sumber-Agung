@@ -1,20 +1,30 @@
 import 'package:flutter/material.dart';
-import 'pages/splash_screen.dart';
+import 'constants.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const DesaWisataApp());
 }
 
-class MyApp extends StatelessWidget {
+class DesaWisataApp extends StatelessWidget {
+  const DesaWisataApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Desa Wisata Sumber Agung',
       debugShowCheckedModeBanner: false,
-      title: 'Desa Wisata',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primaryColor: kPrimaryColor,
+        scaffoldBackgroundColor: kBackgroundColor,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: kPrimaryColor,
+          foregroundColor: Colors.white,
+          elevation: 0,
+        ),
+        useMaterial3: true,
       ),
-      home: SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }
