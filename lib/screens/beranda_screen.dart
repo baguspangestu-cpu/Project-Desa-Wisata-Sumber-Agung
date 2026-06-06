@@ -27,7 +27,10 @@ class BerandaScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
                       Text("Desa Wisata", style: TextStyle(color: Colors.white70)),
-                      Text("Sumber Agung", style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                      Text(
+                        "Sumber Agung", 
+                        style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
                       Text("Bandar Lampung", style: TextStyle(color: Colors.white70, fontSize: 12)),
                     ],
                   ),
@@ -40,16 +43,34 @@ class BerandaScreen extends StatelessWidget {
                 width: double.infinity,
                 decoration: const BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30), 
+                    topRight: Radius.circular(30),
+                  ),
                 ),
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(24),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // BANNER UTAMA
                       ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Image.network("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05", height: 180, width: double.infinity, fit: BoxFit.cover),
+                        child: Image.asset(
+                          "assets/sumber_agung_bg.jpeg", 
+                          height: 180, 
+                          width: double.infinity, 
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              height: 180,
+                              color: Colors.grey[300],
+                              child: const Center(
+                                child: Icon(Icons.broken_image, color: Colors.grey, size: 50),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                       const SizedBox(height: 24),
                       Row(
@@ -90,7 +111,10 @@ class BerandaScreen extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => DetailWisataScreen(wisata: daftarWisataDummy[0])));
+                          Navigator.push(
+                            context, 
+                            MaterialPageRoute(builder: (context) => DetailWisataScreen(wisata: daftarWisataDummy[0])),
+                          );
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -98,24 +122,45 @@ class BerandaScreen extends StatelessWidget {
                             children: [
                               ClipRRect(
                                 borderRadius: const BorderRadius.horizontal(left: Radius.circular(12)),
-                                child: Image.network(daftarWisataDummy[0].imageUrl, width: 100, height: 100, fit: BoxFit.cover),
+                                child: Image.asset(
+                                  "assets/Lengkung_Langit_Dua.jpg", 
+                                  width: 100, 
+                                  height: 100, 
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      width: 100,
+                                      height: 100,
+                                      color: Colors.grey[300],
+                                      child: const Center(
+                                        child: Icon(Icons.broken_image, color: Colors.grey, size: 30),
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(daftarWisataDummy[0].nama, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                                    Text("Desa Sumber Agung", style: TextStyle(color: Colors.grey[600])),
-                                    Row(
-                                      children: const [
-                                        Icon(Icons.star, color: Colors.amber, size: 16),
-                                        Icon(Icons.star, color: Colors.amber, size: 16),
-                                        Icon(Icons.star, color: Colors.amber, size: 16),
-                                        Text(" 4.8", style: TextStyle(fontSize: 12)),
-                                      ],
-                                    )
-                                  ],
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        daftarWisataDummy[0].nama, 
+                                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                      ),
+                                      Text("Desa Sumber Agung", style: TextStyle(color: Colors.grey[600])),
+                                      const SizedBox(height: 4),
+                                      Row(
+                                        children: const [
+                                          Icon(Icons.star, color: Colors.amber, size: 16),
+                                          Icon(Icons.star, color: Colors.amber, size: 16),
+                                          Icon(Icons.star, color: Colors.amber, size: 16),
+                                          Text(" 4.8", style: TextStyle(fontSize: 12)),
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               )
                             ],
@@ -138,11 +183,15 @@ class BerandaScreen extends StatelessWidget {
       onTap: onTap,
       child: Column(
         children: [
-          CircleAvatar(radius: 25, backgroundColor: Colors.grey[200], child: Icon(icon, color: kPrimaryColor)),
+          CircleAvatar(
+            radius: 25, 
+            backgroundColor: Colors.grey[200], 
+            child: Icon(icon, color: kPrimaryColor),
+          ),
           const SizedBox(height: 8),
           Text(label, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500)),
         ],
       ),
     );
   }
-}
+} 

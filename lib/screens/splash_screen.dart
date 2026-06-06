@@ -41,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
                 const Text("BANDAR LAMPUNG", style: TextStyle(letterSpacing: 2, fontSize: 12)),
                 const SizedBox(height: 8),
-                const Text("Desa Wisata, Destinasi Istimewa", style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey)),
+                const Text("Desa Wisata", style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey)),
               ],
             ),
           ),
