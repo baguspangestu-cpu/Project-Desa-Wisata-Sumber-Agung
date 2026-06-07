@@ -21,36 +21,21 @@ class EventScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               children: [
                 _buildEventItem(
-                  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+                  "assets/Lengkung_Langit_Dua.jpg",
                   "Lengkung Langit 2",
                   "Saat resmi beroperasi sekitar September 2021 ada promo pembukaan dan pembukaan wisata baru.",
                 ),
                 _buildEventItem(
-                  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05",
+                  "assets/Kampung_vietnam.jpeg",
                   "Kampung Vietnam",
                   "Sering dipakai komunitas foto, konten kreator, gathering teman.",
                 ),
                 _buildEventItem(
-                  "https://images.unsplash.com/photo-1501854140801-50d01698950b",
-                  "Pintu Langit",
+                  "assets/Paraduta_hill.jpeg",
+                  "Paraduta Hill",
                   "Hiburan musik sore atau malam sambil menikmati city view.",
                 ),
               ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SizedBox(
-              width: double.infinity,
-              height: 45,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: kPrimaryColor,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                ),
-                onPressed: () {},
-                child: const Text("Lihat Semua Event", style: TextStyle(color: Colors.white)),
-              ),
             ),
           ),
         ],
@@ -58,9 +43,12 @@ class EventScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEventItem(String imageUrl, String title, String desc) {
+  Widget _buildEventItem(String imagePath, String title, String desc) {
+    // Mengecek apakah menggunakan asset lokal atau url internet
+    final bool isAsset = imagePath.startsWith('assets/');
+
     return Card(
-      margin: const EdgeInsets.only(bottom: 16), // DI SINI PERBAIKAN UTAMANYA
+      margin: const EdgeInsets.only(bottom: 16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -69,12 +57,21 @@ class EventScreen extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.network(
-                imageUrl,
-                width: 80,
-                height: 80,
-                fit: BoxFit.cover,
-              ),
+              child: isAsset
+                  ? Image.asset(
+                      imagePath,
+                      width: 80,
+                      height: 80,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => _buildErrorImage(),
+                    )
+                  : Image.network(
+                      imagePath,
+                      width: 80,
+                      height: 80,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => _buildErrorImage(),
+                    ),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -97,6 +94,18 @@ class EventScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // Widget cadangan jika gambar gagal dimuat/salah path
+  Widget _buildErrorImage() {
+    return Container(
+      width: 80,
+      height: 80,
+      color: Colors.grey[300],
+      child: const Center(
+        child: Icon(Icons.broken_image, color: Colors.grey, size: 30),
       ),
     );
   }

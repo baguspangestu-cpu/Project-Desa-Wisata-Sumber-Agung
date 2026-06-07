@@ -155,6 +155,7 @@ class BerandaScreen extends StatelessWidget {
                                         children: const [
                                           Icon(Icons.star, color: Colors.amber, size: 16),
                                           Icon(Icons.star, color: Colors.amber, size: 16),
+                                          Icon(Icons.star, color: Colors.amber, size: 16),        
                                           Icon(Icons.star, color: Colors.amber, size: 16),
                                           Text(" 4.8", style: TextStyle(fontSize: 12)),
                                         ],

@@ -74,7 +74,7 @@ class DaftarWisataScreen extends StatelessWidget {
                 final item = semuaWisata[index];
                 
                 // Mengonversi data int hargaTiket ke format teks "Rp" agar tidak error
-                final stringHarga = item.hargaTiket == 0 ? "Sesuai Menu" : "Rp ${item.hargaTiket}";
+                final stringHarga = item.hargaTiket == 0 ? "Sesuai Menu" : "${item.hargaTiket}";
 
                 // Cek apakah gambar menggunakan asset lokal atau link internet URL
                 final bool isAsset = item.imageUrl.startsWith('assets/');
