@@ -2,9 +2,17 @@ import 'package:flutter/material.dart';
 import '../../constants.dart';
 import '../main_navigation.dart';
 import 'register_screen.dart';
+import 'reset_password_screen.dart'; // IMPORT HALAMAN RESET PASSWORD BARU
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +27,15 @@ class LoginScreen extends StatelessWidget {
               width: double.infinity,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  // Sudah menggunakan nama file baru yang ringkas dan bersih
                   image: AssetImage("assets/login_bg.jpeg"),
                   fit: BoxFit.cover,
                 ),
               ),
             ),
             
-            // Kontainer Form Input dengan Desain Melengkung Sesuai Figma
+            // Kontainer Form Input dengan Desain Melengkung
             Transform.translate(
-              offset: const Offset(0, -20), // Membuat efek form agak menumpuk ke atas gambar
+              offset: const Offset(0, -20),
               child: Container(
                 width: double.infinity,
                 decoration: const BoxDecoration(
@@ -55,17 +62,33 @@ class LoginScreen extends StatelessWidget {
                       const Text("Password", style: TextStyle(fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),
                       TextField(
-                        obscureText: true,
+                        obscureText: _obscureText,
                         decoration: InputDecoration(
                           hintText: "Masukan Password",
-                          suffixIcon: const Icon(Icons.visibility_off),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureText ? Icons.visibility_off : Icons.visibility,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText = !_obscureText;
+                              });
+                            },
+                          ),
                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                         ),
                       ),
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            // NAVIGASI DIARAHKAN KE RESET_PASSWORD_SCREEN
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const ResetPasswordScreen()),
+                            );
+                          },
                           child: const Text("Lupa Password ?", style: TextStyle(color: kPrimaryColor)),
                         ),
                       ),
