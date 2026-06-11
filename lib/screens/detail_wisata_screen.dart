@@ -7,22 +7,39 @@ class DetailWisataScreen extends StatelessWidget {
 
   const DetailWisataScreen({super.key, required this.wisata});
 
-  // Fungsi untuk membuka Google Maps secara akurat menggunakan URL eksternal resmi
-  Future<void> _bukaGoogleMaps(String namaTempat, String alamat) async {
-    final String query = Uri.encodeComponent("$namaTempat, $alamat");
-    final Uri url = Uri.parse("https://www.google.com/maps/search/?api=1&query=$query");
+  // KODE PERBAIKAN: Menggunakan URL Intent Universal Google Maps resmi yang stabil untuk Android
+  Future<void> _bukaGoogleMaps(BuildContext context, String namaTempat, String alamat) async {
+    // 1. Membuat query pencarian teks yang aman dari karakter spasi/khusus
+    final String searchQuery = Uri.encodeComponent("$namaTempat, $alamat");
+    
+    // 2. Menggunakan URL universal resmi. Sistem Android akan otomatis menawarkan/membuka aplikasi Google Maps bawaan HP
+    final Uri googleMapsUrl = Uri.parse("https://www.google.com/maps/search/?api=1&query=$searchQuery");
 
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
-    } else {
-      throw Exception('Tidak dapat membuka Google Maps untuk $namaTempat');
+    try {
+      if (await canLaunchUrl(googleMapsUrl)) {
+        await launchUrl(
+          googleMapsUrl, 
+          mode: LaunchMode.externalApplication, // Wajib menggunakan externalApplication agar dilempar ke aplikasi luar
+        );
+      } else {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Google Maps tidak menanggapi permintaan lokasi ini.")),
+          );
+        }
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Gagal memuat peta: $e")),
+        );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // PERBAIKAN LOGIKA UTAMA: Mengecek apakah nama mengandung kata "Lengkung Langit"
-    // agar fleksibel jika ditulis "Lengkung Langit 2" maupun "Lengkung Langit Dua"
+    // Mengecek apakah nama mengandung kata "Lengkung Langit"
     final String targetImageUrl = (wisata.nama.contains("Lengkung Langit"))
         ? "assets/Lengkung_Langit_Dua.jpg"
         : wisata.imageUrl;
@@ -39,7 +56,7 @@ class DetailWisataScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // MENAMPILKAN GAMBAR SECARA DINAMIS (Bisa Asset Lokal maupun Internet URL)
+            // MENAMPILKAN GAMBAR SECARA DINAMIS
             SizedBox(
               width: double.infinity,
               height: 250,
@@ -91,7 +108,7 @@ class DetailWisataScreen extends StatelessWidget {
                         style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                       ),
                       Text(
-                        wisata.hargaTiket == 0 ? "Sesuai Menu" : "Tiket:${wisata.hargaTiket}",
+                        wisata.hargaTiket == 0 ? "Sesuai Menu" : "Tiket: ${wisata.hargaTiket}",
                         style: const TextStyle(
                           fontSize: 14, 
                           fontWeight: FontWeight.bold, 
@@ -114,7 +131,8 @@ class DetailWisataScreen extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        _bukaGoogleMaps(wisata.nama, wisata.lokasi);
+                        // Meneruskan BuildContext ke fungsi untuk keamanan widget mounted
+                        _bukaGoogleMaps(context, wisata.nama, wisata.lokasi);
                       },
                       child: const Text(
                         "Lihat Lokasi di Peta",
